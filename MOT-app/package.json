@@ -1,0 +1,22 @@
+{
+  "name": "nuxt-app",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "devDependencies": {
+    "@nuxt/devtools": "latest",
+    "@nuxtjs/tailwindcss": "^6.8.0",
+    "@types/node": "^18.17.3",
+    "@vite-pwa/nuxt": "^0.1.0",
+    "nuxt": "^3.6.5"
+  },
+  "dependencies": {
+    "@nuxtjs/pwa": "^3.3.5",
+    "vue3-carousel": "^0.3.1"
+  }
+}
