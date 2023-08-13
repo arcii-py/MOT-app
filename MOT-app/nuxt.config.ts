@@ -10,6 +10,7 @@ export default defineNuxtConfig({
       lang: 'en',
       short_name: "Testing",
       description: "test",
+      
       icons: [
         {
           src: 'icons/icon_64x64.png',
@@ -32,6 +33,7 @@ export default defineNuxtConfig({
           type: 'image/png'
         }
       ]
+      
 
     },
   },
