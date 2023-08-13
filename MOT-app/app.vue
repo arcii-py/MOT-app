@@ -3,7 +3,6 @@
   <HerroCounter />
   <MotivationCarousel />
   <SendNotification />
-  <h1 class="bold"> helooooooo wooooorld</h1>
 </template>
 
 <script>
