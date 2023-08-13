@@ -1,7 +1,21 @@
 export default defineNuxtConfig({
-  devtools: { enabled: true },
+  
   modules: [
     '@nuxtjs/tailwindcss',
-    '@vite-pwa/nuxt',
+    '@nuxtjs/pwa',
   ],
+  pwa: {
+    meta: {
+      title: 'My PWA',
+      author: 'Me',
+    },
+    manifest: {
+      name: 'Nuxt.js PWAs are so easy',
+      short_name: 'Nuxt.js PWA',
+      lang: 'en',
+    },
+    icon: {
+      source: '~/static/icon.ico',
+    },
+  },
 });
