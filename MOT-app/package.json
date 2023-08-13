@@ -16,7 +16,6 @@
     "nuxt": "^3.6.5"
   },
   "dependencies": {
-    "@nuxtjs/pwa": "^3.3.5",
     "vue3-carousel": "^0.3.1"
   }
 }
