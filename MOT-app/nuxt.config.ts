@@ -7,6 +7,7 @@ export default defineNuxtConfig({
   pwa: {
     manifest: {
       name: "Nuxt 3 PWA",
+      lang: 'en',
       short_name: "Testing",
       description: "test",
       icons: [
@@ -31,13 +32,7 @@ export default defineNuxtConfig({
           type: 'image/png'
         }
       ]
-    },
-    workbox: {
-      navigateFallback: "/",
-    },
-    devOptions: {
-      enabled: true,
-      type: "module",
+
     },
   },
 });
