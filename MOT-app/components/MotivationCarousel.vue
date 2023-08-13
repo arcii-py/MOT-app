@@ -1,14 +1,17 @@
-<!-- components/GlassCarousel.vue -->
 
 <template>
   <Carousel :autoplay="10000" :wrap-around="true">
     <Slide v-for="message in messages" :key="message">
-      <div class="carousel__item"><p class="glass text-white font-bold text-3xl bg-white bg-opacity-20 backdrop-blur-lg rounded drop-shadow-lg">{{ message }}</p></div>
+      <div class="carousel__item">
+        <p class="glass text-white font-bold text-3xl bg-white bg-opacity-20 backdrop-blur-lg rounded drop-shadow-lg">
+          {{ message }}
+        </p>
+      </div>
     </Slide>
 
     <template #addons>
       <Navigation />
-      <Pagination />
+
     </template>
   </Carousel>
 </template>
@@ -24,7 +27,6 @@ export default defineComponent({
   components: {
     Carousel,
     Slide,
-    
     Navigation,
   },
   data() {
@@ -68,6 +70,6 @@ export default defineComponent({
 .carousel__next {
   box-sizing: content-box;
   border: 5px solid white;
-  
+
 }
 </style>

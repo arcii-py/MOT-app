@@ -8,7 +8,7 @@
       return {
         // Days you want the notification to be sent (0 = Sunday, 1 = Monday, etc.)
         days: [0, 1, 2, 3, 4, 5], // Monday, Tuesday, Friday
-        time: { hours: 20, minutes: 17 } // 3:30 PM
+        time: { hours: 23, minutes: 17 } // 3:30 PM
       };
     },
     methods: {

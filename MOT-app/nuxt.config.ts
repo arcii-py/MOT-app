@@ -2,20 +2,20 @@ export default defineNuxtConfig({
   
   modules: [
     '@nuxtjs/tailwindcss',
-    '@nuxtjs/pwa',
+    '@vite-pwa/nuxt',
   ],
   pwa: {
-    meta: {
-      title: 'My PWA',
-      author: 'Me',
-    },
     manifest: {
-      name: 'Nuxt.js PWAs are so easy',
-      short_name: 'Nuxt.js PWA',
-      lang: 'en',
-    },
-    icon: {
-      source: '~/static/icon.ico',
-    },
-  },
+      name: "Nuxt 3 PWA",
+      short_name: "Testing",
+      description: "test",
+      icons: [
+        {
+          src: 'static/ico.png',
+          sizes: '64x64',
+          type: 'image/png'
+        }
+      ]
+    }
+  }
 });
