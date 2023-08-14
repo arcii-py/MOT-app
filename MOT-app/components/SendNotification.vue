@@ -1,61 +1,65 @@
 <template>
-    <button @click="scheduleNotification">Test Schedule Notification</button>
-  </template>
-  
-  <script>
-  export default {
-    data() {
-      return {
-        // Days you want the notification to be sent (0 = Sunday, 1 = Monday, etc.)
-        days: [0, 1, 2, 3, 4, 5], // Monday, Tuesday, Friday
-        time: { hours: 23, minutes: 40 } // 3:30 PM
-      };
+  <div>
+    <!-- Some UI here -->
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'SendNotification',
+  data() {
+    return {
+      times: [
+        { day: 'Monday', hour: 20, minute: 40 },
+        { day: 'Friday', hour: 15, minute: 20 },
+        // Add more times as required
+      ]
+    }
+  },
+  methods: {
+    checkTime() {
+      const now = new Date();
+      const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      const currentDay = dayNames[now.getDay()];
+      const currentHour = now.getHours();
+      const currentMinute = now.getMinutes();
+
+      for (const time of this.times) {
+        if (time.day === currentDay && time.hour === currentHour && time.minute === currentMinute) {
+          this.sendNotification();
+        }
+      }
     },
-    methods: {
-      async scheduleNotification() {
-        // Check for notification support
-        if (!("Notification" in window)) {
-          alert("This browser does not support desktop notifications.");
-          return;
-        }
-  
-        // Request permission if not already granted
-        if (Notification.permission !== "granted") {
-          const permission = await Notification.requestPermission();
-  
-          // If permission is denied, exit the function
-          if (permission !== "granted") {
-            return;
+    sendNotification() {
+      if (!("Notification" in window)) {
+        console.error("This browser does not support system notifications");
+        return;
+      }
+
+      if (Notification.permission === "granted") {
+        new Notification("Your Notification Title Here", {
+          body: "Your notification content here.",
+          // other options here, like icon etc.
+        });
+      } else if (Notification.permission !== "denied") {
+        Notification.requestPermission().then(permission => {
+          if (permission === "granted") {
+            new Notification("Your Notification Title Here", {
+              body: "Your notification content here.",
+              // other options here, like icon etc.
+            });
           }
-        }
-  
-        // Calculate the next notification time
-        const now = new Date();
-        let nextNotificationTime = new Date(now);
-        nextNotificationTime.setHours(this.time.hours, this.time.minutes, 0, 0);
-  
-        // If the desired time for today has already passed, move to the next day
-        if (now > nextNotificationTime) {
-          nextNotificationTime.setDate(nextNotificationTime.getDate() + 1);
-        }
-  
-        // Find the next day from the specified days
-        while (this.days.indexOf(nextNotificationTime.getDay()) === -1) {
-          nextNotificationTime.setDate(nextNotificationTime.getDate() + 1);
-        }
-  
-        // Calculate the difference between now and the next notification time
-        const timeoutDuration = nextNotificationTime - now;
-  
-        // Schedule the notification
-        setTimeout(() => {
-          new Notification("Scheduled Notification", {
-            body: "This is your scheduled notification.",
-            icon: "path_to_icon.png" // Optional icon
-          });
-        }, timeoutDuration);
+        });
       }
     }
-  };
-  </script>
-  
+  },
+  mounted() {
+    Notification.requestPermission();
+    window.setInterval(this.checkTime, 60000); // Check every minute
+  }
+}
+</script>
+
+<style scoped>
+/* Add your styles here */
+</style>
