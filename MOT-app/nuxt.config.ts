@@ -5,6 +5,7 @@ export default defineNuxtConfig({
     '@vite-pwa/nuxt',
   ],
   pwa: {
+    swURL: '/sw.js', // Path to our service worker
     manifest: {
       name: "Nuxt 3 PWA",
       lang: 'en',
