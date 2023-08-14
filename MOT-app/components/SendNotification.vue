@@ -1,6 +1,7 @@
 <template>
   <div>
-    <!-- Some UI here -->
+    <!-- Add a button to test the notification -->
+    <button @click="sendNotification">Test Notification</button>
   </div>
 </template>
 
@@ -10,7 +11,7 @@ export default {
   data() {
     return {
       times: [
-        { day: 'Monday', hour: 20, minute: 40 },
+        { day: 'Monday', hour: 13, minute: 30 },
         { day: 'Friday', hour: 15, minute: 20 },
         // Add more times as required
       ]
