@@ -13,7 +13,8 @@ export default {
       times: [
         { day: 'Monday', hour: 13, minute: 30 },
         { day: 'Friday', hour: 15, minute: 20 },
-      ]
+      ],
+      vapidPublicKey: 'YOUR_ACTUAL_PUBLIC_VAPID_KEY_HERE'  // Replace with your VAPID public key
     }
   },
   methods: {
@@ -31,24 +32,14 @@ export default {
       }
     },
     sendNotification() {
-      if (!("Notification" in window)) {
-        console.error("This browser does not support system notifications");
-        return;
-      }
-
-      if (Notification.permission === "granted") {
-        new Notification("Your Notification Title Here", {
-          body: "Your notification content here.",
-        });
-      } else if (Notification.permission !== "denied") {
-        Notification.requestPermission().then(permission => {
-          if (permission === "granted") {
-            new Notification("Your Notification Title Here", {
-              body: "Your notification content here.",
-            });
-          }
-        });
-      }
+      // This method will now send a request to your server to trigger a push notification
+      fetch("/.netlify/functions/trigger-push-notification", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ title: "Your Notification Title Here", body: "Your notification content here." }),
+      });
     },
     async requestPermissions() {
       const permission = await Notification.requestPermission();
@@ -60,7 +51,7 @@ export default {
       const subscription = await navigator.serviceWorker.ready.then(reg => 
         reg.pushManager.subscribe({
           userVisibleOnly: true,
-          applicationServerKey: "YOUR_PUBLIC_VAPID_KEY"
+          applicationServerKey: this.vapidPublicKey
         })
       );
 

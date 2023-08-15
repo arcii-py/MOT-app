@@ -1,5 +1,8 @@
-export default defineNuxtConfig({
+import dotenv from 'dotenv';
 
+dotenv.config();
+
+export default {
   modules: [
     '@nuxtjs/tailwindcss',
     '@vite-pwa/nuxt',
@@ -11,7 +14,6 @@ export default defineNuxtConfig({
       lang: 'en',
       short_name: "Testing",
       description: "test",
-      
       icons: [
         {
           src: 'icons/icon_64x64.png',
@@ -34,9 +36,14 @@ export default defineNuxtConfig({
           type: 'image/png'
         }
       ]
-      
-
     },
   },
-});
 
+  env: {
+    VAPID_PUBLIC_KEY: process.env.VAPID_PUBLIC_KEY
+  },
+
+  publicRuntimeConfig: {
+    VAPID_PUBLIC_KEY: process.env.VAPID_PUBLIC_KEY
+  }
+};
