@@ -20,14 +20,28 @@ exports.handler = async function(event, context) {
 
     if (existingSubscription) {
       console.log('Subscription already exists.');
-    } else {
-      await client.query(
-        q.Create(q.Collection('subscriptions'), {
-          data: subscription
-        })
-      );
-      console.log('Subscription saved to FaunaDB.');
+      return {
+        statusCode: 200,
+        body: JSON.stringify({ message: "Subscription already exists!" }),
+      };
     }
+  } catch (error) {
+    if (error.requestResult.statusCode !== 404) {
+      console.error('Error querying FaunaDB:', error);
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ message: "Internal Server Error" })
+      };
+    }
+  }
+
+  try {
+    await client.query(
+      q.Create(q.Collection('subscriptions'), {
+        data: subscription
+      })
+    );
+    console.log('Subscription saved to FaunaDB.');
   } catch (error) {
     console.error('Error saving subscription to FaunaDB:', error);
     return {
@@ -38,6 +52,6 @@ exports.handler = async function(event, context) {
 
   return {
     statusCode: 200,
-    body: JSON.stringify({ message: "Subscription received!" }),
+    body: JSON.stringify({ message: "Subscription received and saved!" }),
   };
 };

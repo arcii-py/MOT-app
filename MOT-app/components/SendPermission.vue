@@ -14,7 +14,6 @@
       };
     },
     mounted() {
-      // Check if Notification API and Service Worker are supported and if permission is not already granted
       if ('Notification' in window && 'serviceWorker' in navigator && Notification.permission !== 'granted') {
         this.showButton = true;
       }
@@ -26,26 +25,44 @@
   
           if (permission === 'granted') {
             this.showButton = false;
-            // You can also subscribe the user to push notifications here if desired
             this.subscribeUserToPush();
           }
         } catch (error) {
           console.error("Error requesting notification permission:", error);
         }
       },
-      subscribeUserToPush() {
+      async subscribeUserToPush() {
         if ('serviceWorker' in navigator) {
-          navigator.serviceWorker.ready.then(registration => {
-            registration.pushManager.subscribe({
+          try {
+            const registration = await navigator.serviceWorker.ready;
+            const subscription = await registration.pushManager.subscribe({
               userVisibleOnly: true,
-              applicationServerKey: this.urlBase64ToUint8Array('BDVegVtNx38z96_BoMa3WeQJHD-4WrqXDe3vtcEYI3Bo7t9E5JV7opeqE68ruAwgEsoRfFcMvJYjm2kSNwTSLfg')
-            }).then(subscription => {
-              // Send subscription to your server or save it in your DB (e.g., Fauna)
-              console.log("User subscribed:", subscription);
-            }).catch(error => {
-              console.error('Failed to subscribe the user: ', error);
+              applicationServerKey: this.urlBase64ToUint8Array(process.env.VAPID_PUBLIC_KEY)
             });
+  
+            await this.sendSubscriptionToServer(subscription);
+          } catch (error) {
+            console.error('Failed to subscribe the user: ', error);
+          }
+        }
+      },
+      async sendSubscriptionToServer(subscription) {
+        try {
+          const response = await fetch("/.netlify/functions/save-subscription", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(subscription),
           });
+  
+          if (!response.ok) {
+            throw new Error('Failed to save subscription on the server');
+          }
+  
+          console.log("User subscribed:", subscription);
+        } catch (error) {
+          console.error('Failed to save subscription on the server: ', error);
         }
       },
       urlBase64ToUint8Array(base64String) {
@@ -67,7 +84,6 @@
   </script>
   
   <style scoped>
-  /* Add your styles here */
   button {
     padding: 10px 15px;
     background-color: #007BFF;
